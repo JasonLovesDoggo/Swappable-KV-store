@@ -1,0 +1,4 @@
+[database]
+;options are Redis, PostgreSQL or MongoDB
+DatabaseChoice = PostgreSQL ; your dabatase choice
+Uri = ;uri for the database
