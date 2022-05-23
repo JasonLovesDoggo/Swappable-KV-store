@@ -1,0 +1,3 @@
+
+class DatabaseNotFoundError(NotImplementedError):
+    pass
