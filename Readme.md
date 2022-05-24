@@ -1,5 +1,4 @@
-
-## This is kind of a useless project as this has a bunch of code that other code invalidates, but i'm still building this to learn various databases and SQAlchemy
+# A KV store that you can swap databases and migrate on the fly
 
 ### todo add a db for mysql
 
