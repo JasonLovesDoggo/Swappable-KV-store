@@ -6,9 +6,12 @@ import sqlalchemy as sa
 from sqlalchemy import Column, Text
 from sqlalchemy.dialects.postgresql import JSONB
 
+from databases.Base import DatabaseStats
 
-class PostGreSQL:
+
+class PostGreSQL(DatabaseStats):
     def __init__(self, uri, table_name='primary'):  # function to initialize the class
+        super().__init__()
         self.uri = uri
         self.db = sa.create_engine(uri)
         self.engine = self.db.connect()
@@ -23,8 +26,11 @@ class PostGreSQL:
         return PostGreSQL(self.uri, table_name=arg)
 
     def get_value(self, key):  # function to get a value from the database
-        res = self.engine.execute(self.primary.select().where(self.primary.c.key == key)).fetchall()
-        return res
+        try:
+            res = self.engine.execute(self.primary.select().where(self.primary.c.key == key)).fetchone()[1]
+            return res
+        except Exception:
+            return None
 
     def __setitem__(self, key, value):  # redirect to the insert function
         return self.insert((key, value))

@@ -4,6 +4,8 @@ from typing import Dict, List
 
 import pymongo
 
+from databases.Base import DatabaseStats
+
 
 class Collection:
     def __init__(self, client, collection):
@@ -20,8 +22,9 @@ class Collection:
         self.collection.delete({"key": key})
 
 
-class MongoDB:
+class MongoDB(DatabaseStats):
     def __init__(self, uri):
+        super().__init__()
         self.client = pymongo.MongoClient(uri)['primary']
         # self.AddTable("test")['pizza'].insert({"name": "test"})
 

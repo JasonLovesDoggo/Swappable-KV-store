@@ -11,7 +11,7 @@ config = ConfigParser()
 config.read('config.ini')
 
 app = FastAPI()
-app.db = Database((config['database']['DatabaseChoice']), config['database']['Uri']).db
+app.db = Database((config['setup']['DatabaseChoice'])).db
 
 app.db['test'].insert({'sxz': 'test'})
 app.db['test'].delete('sxz')
