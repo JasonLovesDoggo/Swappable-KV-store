@@ -8,7 +8,7 @@ from databases import grouper
 
 config = ConfigParser()
 config.read('../config.ini')
-TESTKEY = secrets.token_urlsafe(16)
+TESTKEY = 'MmEKhQlTGCQSEDzBJQRqNg' #secrets.token_urlsafe(16)
 TESTVALUE = "test value"
 
 
@@ -22,7 +22,7 @@ class PostGreSQL(unittest.TestCase):
             raise self.skipTest("PostgreSQL Uri not found in config.ini")
         self.PostGreDB = grouper.Database((config['setup']['DatabaseChoice']), 'tests').db
         if self.PostGreDB.get_value(self.TESTKEY) is None:  # if the key doesn't exit in the database
-            self.test_insert()
+            self.test_a_insert()
             self.test_delete()
         else:  # if the key does exist in the database, pick a new key
             self.TESTKEY = secrets.token_urlsafe(16)
@@ -38,8 +38,12 @@ class PostGreSQL(unittest.TestCase):
 
     def test_delete(self):
         """tests if the database can delete a value"""
-        self.PostGreDB.delete(self.TESTKEY)
-        self.assertFalse(self.PostGreDB.get_value(self.TESTKEY))
+        print(self.PostGreDB.exists(self.TESTKEY))
+        if self.PostGreDB.exists(self.TESTKEY):
+            self.PostGreDB.delete(self.TESTKEY)
+            self.assertFalse(self.PostGreDB.get_value(self.TESTKEY))
+        else:
+            return self.skipTest("The key doesn't exist in the database")
 
 
 class MongoDB(unittest.TestCase):

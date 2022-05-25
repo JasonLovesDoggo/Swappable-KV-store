@@ -21,6 +21,9 @@ class Collection:
     def delete(self, key):
         self.collection.delete({"key": key})
 
+    def exists(self, key):
+        return self.collection.exists({"key": key})
+
 
 class MongoDB(DatabaseStats):
     def __init__(self, uri):

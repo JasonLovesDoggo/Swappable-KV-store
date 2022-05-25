@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Dict
 
 import sqlalchemy as sa
-from sqlalchemy import Column, Text
+from sqlalchemy import Column, Text, select
 from sqlalchemy.dialects.postgresql import JSONB
 
 from databases.Base import DatabaseStats
@@ -40,6 +40,9 @@ class PostGreSQL(DatabaseStats):
 
     def __delitem__(self, key):  # redirect to the delete function
         return self.delete(key)
+
+    def exists(self, key):  # function to check if a key exists
+        return select(self.primary.columns).where(self.primary.c.key == key).execute().fetchone() is not None
 
     def insert(self, key_value: tuple | dict):  # function to insert a key value pair
         if isinstance(key_value, tuple):

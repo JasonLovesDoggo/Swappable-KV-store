@@ -1,5 +1,4 @@
 import enum
-from databases import postgresql, redis
 
 
 class Databases(enum.Enum):
