@@ -1,4 +1,10 @@
-[database]
+[setup]
 ;options are Redis, PostgreSQL or MongoDB
-DatabaseChoice = PostgreSQL ; your dabatase choice
-Uri = ;uri for the database
+DatabaseChoice = PostgreSQL
+
+[redis]
+Uri = redis://localhost:6379
+[postgresql]
+Uri = postgresql://postgres:PASSWORD@HOST:PORT/DATABASE
+[mongodb]
+Uri = mongodb://mongo:PASSWORD@HOST:PORT
