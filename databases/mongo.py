@@ -12,6 +12,9 @@ class Collection:
         self.client = client
         self.collection = collection
 
+    def get_value(self, key):
+        return self.collection.find_one({"key": key})
+
     def insert(self, data: Dict):
         self.collection.insert(data)
 
@@ -24,12 +27,14 @@ class Collection:
     def exists(self, key):
         return self.collection.exists({"key": key})
 
+    def database(self):
+        return super(self)
+
 
 class MongoDB(DatabaseStats):
     def __init__(self, uri):
         super().__init__()
-        self.client = pymongo.MongoClient(uri)['primary']
-        # self.AddTable("test")['pizza'].insert({"name": "test"})
+        self.client = pymongo.MongoClient(uri)['primary']  # self.AddTable("test")['pizza'].insert({"name": "test"})
 
     def __getitem__(self, key):  # returns the database of the given name
         return Collection(self.client, self.client[key])
@@ -43,5 +48,3 @@ class MongoDB(DatabaseStats):
 
     def close(self):
         self.client.close()
-
-

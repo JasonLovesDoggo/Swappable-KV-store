@@ -4,8 +4,6 @@ from typing import Union
 from fastapi import FastAPI
 
 from databases.grouper import Database
-from utils.structures import Databases
-
 
 config = ConfigParser()
 config.read('config.ini')

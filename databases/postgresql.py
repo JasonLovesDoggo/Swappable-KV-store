@@ -25,7 +25,7 @@ class PostGreSQL(DatabaseStats):
     def __getitem__(self, arg):
         return PostGreSQL(self.uri, table_name=arg)
 
-    def get_value(self, key):  # function to get a value from the database
+    def get(self, key):  # function to get a value from the database
         try:
             res = self.engine.execute(self.primary.select().where(self.primary.c.key == key)).fetchone()[1]
             return res
@@ -45,18 +45,21 @@ class PostGreSQL(DatabaseStats):
         return select(self.primary.columns).where(self.primary.c.key == key).execute().fetchone() is not None
 
     def insert(self, key_value: tuple | dict):  # function to insert a key value pair
-        if isinstance(key_value, tuple):
-            key, value = key_value
-        elif isinstance(key_value, dict):
-            def get_kv(d: Dict):  # get the first, key and value in a dict
-                for key, value in d.items():
-                    return key, value
-
-            key, value = get_kv(key_value)
-        else:
-            raise TypeError("key_value must be a tuple or dict")
+        key, value = unpack(key_value)
         self.engine.execute(self.primary.insert(), key=key, value=value)
 
     def close(self):  # function to close the connection
         self.db.dispose()
         self.engine.close()
+
+def unpack(key_value: tuple | dict):  # function to unpack a tuple or dict
+    if isinstance(key_value, tuple):
+        key, value = key_value
+        return key, value
+    elif isinstance(key_value, dict):
+        def get_kv(d: Dict):  # get the first, key and value in a dict
+            for key, value in d.items():
+                return key, value
+        return get_kv(key_value)
+    else:
+        raise TypeError("key_value must be a tuple or dict")
